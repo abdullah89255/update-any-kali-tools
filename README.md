@@ -123,3 +123,109 @@ sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y && nuclei 
 ---
 
 Need help writing a script to automate all updates for your tools in one shot?
+To remove **any tool in Kali Linux**, you can use the appropriate `apt`, `snap`, or `pip` command, depending on how the tool was installed.
+
+---
+
+### ✅ **If the tool was installed with `apt`** (most common):
+
+#### 🔹 Step 1: Find the exact package name
+
+```bash
+dpkg -l | grep <tool-name>
+```
+
+**Example**:
+
+```bash
+dpkg -l | grep hydra
+```
+
+#### 🔹 Step 2: Remove the package
+
+```bash
+sudo apt remove <package-name>
+```
+
+To **remove configuration files** too (recommended):
+
+```bash
+sudo apt purge <package-name>
+```
+
+To **completely clean leftover dependencies**:
+
+```bash
+sudo apt autoremove
+```
+
+---
+
+### ✅ **If it was installed via Snap**:
+
+```bash
+snap list
+sudo snap remove <tool-name>
+```
+
+---
+
+### ✅ **If installed with `pip` (Python tools):**
+
+```bash
+pip list | grep <tool-name>
+pip uninstall <tool-name>
+```
+
+Or use `pip3` if it's a Python 3 package:
+
+```bash
+pip3 uninstall <tool-name>
+```
+
+---
+
+### ✅ **Remove manually cloned tools (from GitHub)**:
+
+If you cloned a tool manually like this:
+
+```bash
+git clone https://github.com/example/tool.git
+```
+
+Then simply delete the folder:
+
+```bash
+rm -rf ~/path/to/tool
+```
+
+If it was installed system-wide with a setup script:
+
+```bash
+sudo make uninstall
+```
+
+(Only works if the developer provided a `Makefile` or uninstall script.)
+
+---
+
+### ✅ Clean up cache and packages (optional):
+
+```bash
+sudo apt clean
+sudo apt autoremove
+```
+
+---
+
+### 📌 Example: Remove `hydra`
+
+```bash
+sudo apt purge hydra
+sudo apt autoremove
+```
+
+---
+
+If you tell me the **name of the tool**, I can give the **exact commands** for removing it.
+
