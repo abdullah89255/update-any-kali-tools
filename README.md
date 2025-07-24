@@ -226,6 +226,100 @@ sudo apt autoremove
 ```
 
 ---
+Here's a simple and effective **Bash script** to:
 
-If you tell me the **name of the tool**, I can give the **exact commands** for removing it.
+1. ✅ **Remove any Kali Linux tool by name**
+2. 🧹 **Clear system cache and residual package files**
+
+---
+
+## 🛠️ Bash Script: `remove_kali_tool.sh`
+
+```bash
+#!/bin/bash
+
+# File: remove_kali_tool.sh
+# Usage: ./remove_kali_tool.sh <tool-name>
+
+# Check for tool name input
+if [ -z "$1" ]; then
+  echo "[!] Usage: $0 <tool-name>"
+  exit 1
+fi
+
+TOOL="$1"
+
+echo "[*] Trying to remove the tool: $TOOL"
+
+# Step 1: Remove the tool (if installed)
+sudo apt remove --purge -y "$TOOL"
+sudo apt autoremove -y
+sudo apt autoclean -y
+
+# Step 2: Clean user-level cache (APT + thumbnails + browser + pip)
+echo "[*] Cleaning cache files..."
+
+rm -rf ~/.cache/*
+rm -rf ~/.thumbnails/*
+rm -rf ~/.local/share/Trash/*
+rm -rf ~/.mozilla/firefox/*.default-release/cache2/*
+rm -rf ~/.config/google-chrome/Default/Cache/*
+rm -rf ~/.config/chromium/Default/Cache/*
+rm -rf ~/.local/__pycache__/*
+rm -rf ~/.local/share/pip/*
+
+# Step 3: Clear system-wide cache (requires root)
+echo "[*] Cleaning APT and system cache..."
+
+sudo rm -rf /var/cache/apt/*
+sudo rm -rf /var/log/*
+sudo journalctl --vacuum-time=1d 2>/dev/null
+
+echo "[✓] Finished removing $TOOL and clearing cache."
+```
+
+---
+
+## ▶️ How to Use
+
+### 1. Save it as a file:
+
+```bash
+nano remove_kali_tool.sh
+```
+
+Paste the script and save (`Ctrl + O`, `Enter`, `Ctrl + X`)
+
+### 2. Make it executable:
+
+```bash
+chmod +x remove_kali_tool.sh
+```
+
+### 3. Run it with tool name:
+
+```bash
+./remove_kali_tool.sh dnsx
+```
+
+> Replace `dnsx` with any installed Kali tool like `nmap`, `hydra`, `wireshark`, etc.
+
+---
+
+## 🧠 Optional Tip
+
+You can list installed tools to help decide what to remove:
+
+```bash
+apt list --installed | grep kali
+```
+
+---
+
+Let me know if you want:
+
+* A **GUI version**
+* A version that **asks before deleting**
+* Or one that **removes entire categories** like "all recon tools"
+
 
