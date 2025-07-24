@@ -316,5 +316,108 @@ Let me know if you want:
 * A **GUI version**
 * A version that **asks before deleting**
 * Or one that **removes entire categories** like "all recon tools"
+Great! Below is a **Bash script** to automatically update **all tools and packages** in Kali Linux. It handles:
+
+✅ System update
+✅ Tool/package upgrade
+✅ Kernel update
+✅ Nuclei/subfinder/amass/httpx/etc. update (optional section)
+✅ Cleaning residual cache
+
+---
+
+## 🛠️ Bash Script: `kali_updater.sh`
+
+```bash
+#!/bin/bash
+
+# File: kali_updater.sh
+# Description: Updates all Kali packages, tools, and cleans the system
+
+echo "===================================="
+echo "    🔄 Kali Linux Update Script     "
+echo "===================================="
+
+# Step 1: Update and Upgrade System Packages
+echo "[*] Updating APT repositories..."
+sudo apt update
+
+echo "[*] Upgrading installed packages..."
+sudo apt full-upgrade -y
+
+# Step 2: Clean up residual files
+echo "[*] Cleaning up unused packages and cache..."
+sudo apt autoremove -y
+sudo apt autoclean -y
+sudo apt clean -y
+
+# Step 3: Optional – Update common security tools (uncomment if you use them)
+echo "[*] Updating popular tools (if installed)..."
+
+# Nuclei templates
+if [ -d "$HOME/nuclei-templates" ]; then
+  echo "[*] Updating nuclei-templates..."
+  cd ~/nuclei-templates && git pull
+fi
+
+# Subfinder
+if command -v subfinder &> /dev/null; then
+  echo "[*] Updating subfinder..."
+  subfinder -update
+fi
+
+# Amass
+if command -v amass &> /dev/null; then
+  echo "[*] Updating amass..."
+  amass update
+fi
+
+# Httpx
+if command -v httpx &> /dev/null; then
+  echo "[*] Updating httpx binary (Go-based tools)..."
+  go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+fi
+
+# Step 4: Done
+echo "===================================="
+echo " ✅ Update completed successfully!  "
+echo "===================================="
+```
+
+---
+
+## ▶️ How to Use
+
+### 1. Save the script:
+
+```bash
+nano kali_updater.sh
+```
+
+Paste the script, save (`Ctrl + O`, `Enter`, `Ctrl + X`)
+
+### 2. Make it executable:
+
+```bash
+chmod +x kali_updater.sh
+```
+
+### 3. Run the script:
+
+```bash
+./kali_updater.sh
+```
+
+---
+
+## 💡 Notes
+
+* Make sure `go` is installed if you want to update Go-based tools (`httpx`, `nuclei`, etc.).
+* You can add your own tools under the "Optional" section easily.
+* This script keeps both your **system packages** and **security tools** up-to-date in one click.
+
+---
+
+Want a **GUI or menu-based version** of this script (with dialog or whiptail)? Let me know and I’ll make that for you too.
 
 
