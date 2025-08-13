@@ -419,5 +419,8 @@ chmod +x kali_updater.sh
 ---
 
 Want a **GUI or menu-based version** of this script (with dialog or whiptail)? Let me know and I’ll make that for you too.
-
+Geany
+```bash
+sudo apt install geany
+```
 
